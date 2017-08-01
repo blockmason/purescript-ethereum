@@ -1,5 +1,6 @@
 {
-  "name": "purescript-ethereum",
+    "name": "purescript-ethereum",
+    "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
