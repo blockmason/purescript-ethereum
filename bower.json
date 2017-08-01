@@ -1,8 +1,10 @@
 {
     "name": "purescript-ethereum",
     "license": "MIT",
-    "repository": {" type": "git",
-                   "url": "git://github.com/blockmason/purescript-ethereum.git" },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/blockmason/purescript-ethereum.git"
+    },
     "ignore": [
         "**/.*",
         "node_modules",
