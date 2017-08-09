@@ -43,3 +43,16 @@ var txResultToRaw = function(txResult) {
         return "Done";
     return "BadTx";
 };
+
+
+    /*
+TODO: use this
+
+//bad
+{blockHash: "0x0000000000000000000000000000000000000000000000000000000000000000", blockNumber: null, from: "0x406dd5315e6b63d6f1bad0c4ab9cd8eba6bb1bd2", gas: 109327, gasPrice: e, …}
+
+//good
+{blockHash: "0x6e37786ca1d9f803d5ca0fef34707dca912c5c0e2c12d5f9be4b32264dc36ca2", blockNumber: 1456258, from: "0x406dd5315e6b63d
+
+
+    */
