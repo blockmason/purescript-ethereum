@@ -10,11 +10,8 @@ module Network.Eth.Metamask
 
 import Prelude
 import Control.Monad.Eff           (Eff, kind Effect)
-import Control.Monad.Eff.Class     (liftEff)
 import Control.Monad.Aff           (Aff, makeAff)
 import Control.Monad.Aff.Class     (liftAff)
-import Data.Maybe                  (Maybe(..), maybe')
-import Data.Either                 (Either(..), either)
 import Network.Eth     as E
 
 foreign import data METAMASK ∷ Effect
@@ -28,6 +25,7 @@ instance showMetamaskStatus ∷ Show MetamaskStatus where
 foreign import checkStatusImpl ∷ ∀ e. Unit → Eff e Boolean
 foreign import currentUserImpl ∷ ∀ e. Unit → Eff e String
 foreign import checkTxStatusImpl ∷ ∀ e. (String → Eff e Unit) → String → Eff e Unit
+foreign import getNetworkImpl ∷ ∀ e. (String → Eff e Unit) → Eff e Unit
 
 checkStatus ∷ ∀ e. Eff (metamask ∷ METAMASK | e) MetamaskStatus
 checkStatus = do
@@ -36,6 +34,10 @@ checkStatus = do
 
 currentUserAddress ∷ ∀ e. Eff (metamask ∷ METAMASK | e) E.EthAddress
 currentUserAddress = E.eaMkAddr <$> currentUserImpl unit
+
+type StringNetId = String
+getNetwork ∷ ∀ e. Aff e StringNetId
+getNetwork = liftAff $ makeAff (\_ s → getNetworkImpl s)
 
 loggedIn ∷ ∀ e. Eff (metamask ∷ METAMASK | e) Boolean
 loggedIn = do

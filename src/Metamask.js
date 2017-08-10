@@ -19,6 +19,14 @@ exports.currentUserImpl = function(dummyVal) {
     };
 };
 
+exports.getNetworkImpl = function(callback) {
+    return function() {
+        web3.version.getNetwork(function(err, netId) {
+            callback(netId);
+        });
+    };
+};
+
 exports.checkTxStatusImpl = function(callback) {
     return function(txHash) {
         return function() {
