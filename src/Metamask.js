@@ -22,7 +22,10 @@ exports.currentUserImpl = function(dummyVal) {
 exports.getNetworkImpl = function(callback) {
     return function() {
         web3.version.getNetwork(function(err, netId) {
-            callback(netId)();
+            if ( !err )
+                callback(netId)();
+            else
+                callback(err)();
         });
     };
 };

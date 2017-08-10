@@ -37,7 +37,7 @@ currentUserAddress ∷ ∀ e. Eff (metamask ∷ METAMASK | e) E.EthAddress
 currentUserAddress = E.eaMkAddr <$> currentUserImpl unit
 
 type StringNetId = String
-getNetwork ∷ ∀ e. Aff e StringNetId
+getNetwork ∷ ∀ e. Aff (metamask ∷ METAMASK | e) StringNetId
 getNetwork = liftAff $ makeAff (\_ s → getNetworkImpl s)
 
 loggedIn ∷ ∀ e. Eff (metamask ∷ METAMASK | e) Boolean
