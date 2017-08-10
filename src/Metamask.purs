@@ -4,6 +4,7 @@ module Network.Eth.Metamask
        , loggedIn
        , currentUserAddress
        , checkTxStatus
+       , getNetwork
        , METAMASK
        , MetamaskStatus(..)
        ) where
