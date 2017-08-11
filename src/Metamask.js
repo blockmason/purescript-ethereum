@@ -3,7 +3,7 @@
 
 exports.web3DefinedImpl = function(unit) {
     return function() {
-        if ( !web3 )
+        if ( typeof web3 == "undefined" )
             return false;
         else
             return true;
