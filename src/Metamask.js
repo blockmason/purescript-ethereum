@@ -1,6 +1,15 @@
 //requires web3 js and truffle-contract js
 "use strict";
 
+exports.web3DefinedImpl = function(unit) {
+    return function() {
+        if ( !web3 )
+            return false;
+        else
+            return true;
+    };
+};
+
 exports.checkStatusImpl = function(dummyVal) {
     return function() {
         //check whether metamask is logged in

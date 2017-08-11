@@ -1,6 +1,7 @@
 module Network.Eth.Metamask
        (
          checkStatus
+       , hasWeb3
        , loggedIn
        , currentUserAddress
        , checkTxStatus
@@ -23,10 +24,14 @@ instance showMetamaskStatus ∷ Show MetamaskStatus where
     LoggedOut → "Metamask is logged out."
     LoggedIn  → "Metamask is logged in."
 
+foreign import web3DefinedImpl ∷ ∀ e. Unit → Eff e Boolean
 foreign import checkStatusImpl ∷ ∀ e. Unit → Eff e Boolean
 foreign import currentUserImpl ∷ ∀ e. Unit → Eff e String
 foreign import checkTxStatusImpl ∷ ∀ e. (String → Eff e Unit) → String → Eff e Unit
 foreign import getNetworkImpl ∷ ∀ e. (String → Eff e Unit) → Eff e Unit
+
+hasWeb3 ∷ ∀ e. Eff (metamask ∷ METAMASK | e) Boolean
+hasWeb3 = web3DefinedImpl unit
 
 checkStatus ∷ ∀ e. Eff (metamask ∷ METAMASK | e) MetamaskStatus
 checkStatus = do
