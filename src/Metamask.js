@@ -10,21 +10,21 @@ exports.web3DefinedImpl = function(unit) {
     };
 };
 
-exports.checkStatusImpl = function(dummyVal) {
+exports.checkStatusImpl = function(callback) {
     return function() {
-        //check whether metamask is logged in
-        if (web3.eth.accounts[0] == undefined) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        //check whether web3 is logged in
+        web3.eth.getAccounts(function(e,r) {
+            if (r.length > 0) callback(true)();
+            else              callback(false)();
+        });
     };
 };
 
-exports.currentUserImpl = function(dummyVal) {
+exports.currentUserImpl = function(callback) {
     return function() {
-        return web3.eth.accounts[0];
+        web3.eth.getAccounts(function(e,r) {
+            callback(r[0])();
+        });
     };
 };
 

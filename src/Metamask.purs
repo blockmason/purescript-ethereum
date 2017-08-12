@@ -25,27 +25,29 @@ instance showMetamaskStatus ∷ Show MetamaskStatus where
     LoggedIn  → "Metamask is logged in."
 
 foreign import web3DefinedImpl ∷ ∀ e. Unit → Eff e Boolean
-foreign import checkStatusImpl ∷ ∀ e. Unit → Eff e Boolean
-foreign import currentUserImpl ∷ ∀ e. Unit → Eff e String
+foreign import checkStatusImpl ∷ ∀ e. (Boolean → Eff e Unit) → Eff e Unit
+foreign import currentUserImpl ∷ ∀ e. (String → Eff e Unit)  → Eff e Unit
 foreign import checkTxStatusImpl ∷ ∀ e. (String → Eff e Unit) → String → Eff e Unit
 foreign import getNetworkImpl ∷ ∀ e. (String → Eff e Unit) → Eff e Unit
 
 hasWeb3 ∷ ∀ e. Eff (metamask ∷ METAMASK | e) Boolean
 hasWeb3 = web3DefinedImpl unit
 
-checkStatus ∷ ∀ e. Eff (metamask ∷ METAMASK | e) MetamaskStatus
+checkStatus ∷ ∀ e. Aff (metamask ∷ METAMASK | e) MetamaskStatus
 checkStatus = do
-  res ← checkStatusImpl unit
+  res ← makeAff (\_ s → checkStatusImpl s)
   if res then pure LoggedIn else pure LoggedOut
 
-currentUserAddress ∷ ∀ e. Eff (metamask ∷ METAMASK | e) E.EthAddress
-currentUserAddress = E.eaMkAddr <$> currentUserImpl unit
+currentUserAddress ∷ ∀ e. Aff (metamask ∷ METAMASK | e) E.EthAddress
+currentUserAddress = do
+  addrStr ← makeAff (\_ s → currentUserImpl s)
+  pure $ E.eaMkAddr addrStr
 
 type StringNetId = String
 getNetwork ∷ ∀ e. Aff (metamask ∷ METAMASK | e) StringNetId
 getNetwork = liftAff $ makeAff (\_ s → getNetworkImpl s)
 
-loggedIn ∷ ∀ e. Eff (metamask ∷ METAMASK | e) Boolean
+loggedIn ∷ ∀ e. Aff (metamask ∷ METAMASK | e) Boolean
 loggedIn = do
   status ← checkStatus
   case status of
